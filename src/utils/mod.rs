@@ -1,5 +1,4 @@
 use std::str::FromStr;
-use std::iter::FromIterator;
 use std::fs::File;
 use std::io::Read;
 

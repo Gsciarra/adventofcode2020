@@ -1,7 +1,4 @@
 use std::str::FromStr;
-use std::iter::FromIterator;
-use std::slice::Iter;
-use std::char::ParseCharError;
 
 pub fn str_contain_char_a_range_of_times(times_char_password: &TimesCharPassword) -> bool {
     let TimesCharPassword(times, char, password) = times_char_password;
@@ -9,10 +6,11 @@ pub fn str_contain_char_a_range_of_times(times_char_password: &TimesCharPassword
     times.0 <= occurrences && occurrences <= times.1
 }
 
-pub fn str_contain_char_in_one_positions(str: &Password, char: &CharInPassword, positions: &Positions) -> bool {
-    let is_in_position1 = str.chars().nth(positions.0 - 1).unwrap() == *char;
-    if str.len() >= positions.1 {
-        let is_in_position2 = str.chars().nth(positions.1 - 1).unwrap() == *char;
+pub fn str_contain_char_in_one_positions(positions_char_password: &PositionsCharPassword) -> bool {
+    let PositionsCharPassword(positions, char, password) = positions_char_password;
+    let is_in_position1 = password.chars().nth(positions.0 - 1).unwrap() == *char;
+    if password.len() >= positions.1 {
+        let is_in_position2 = password.chars().nth(positions.1 - 1).unwrap() == *char;
         (is_in_position1 && !is_in_position2) || (!is_in_position1 && is_in_position2)
     } else {
         is_in_position1
@@ -25,6 +23,10 @@ pub struct Positions(usize, usize);
 
 type Password = String;
 type CharInPassword = char;
+
+pub struct TimesCharPassword(Times, CharInPassword, Password);
+
+pub struct PositionsCharPassword(Positions, CharInPassword, Password);
 
 impl FromStr for Times {
     type Err = ();
@@ -72,25 +74,6 @@ impl FromStr for Positions {
     }
 }
 
-// impl FromStr for CharInPassword {
-//     type Err = ();
-//
-//     fn from_str(s: &str) -> Result<Self, Self::Err> {
-//         match s.chars().nth(0) {
-//             Some(c) => { Ok(c) }
-//             None => { panic!(format!("The string '{}' can not be converted into Char", s)) }
-//         }
-//     }
-// }
-
-
-pub struct TimesCharPassword(Times, CharInPassword, Password);
-
-pub struct PositionsCharPassword(Positions, CharInPassword, Password);
-
-// pub struct TimesCharPasswordCollection(Vec<TimesCharPassword>);
-
-
 impl FromStr for TimesCharPassword {
     type Err = ();
 
@@ -100,9 +83,9 @@ impl FromStr for TimesCharPassword {
             panic!(format!("The string '{}' can not be converted into TupleCharStr", s))
         }
 
-        let char = match CharInPassword::from_str(raw_data[1]) {
-            Ok(c) => { c }
-            Err(_) => { panic!(format!("The string '{}' can not be converted into TupleCharStr", s)) }
+        let char: CharInPassword = match raw_data[1].chars().nth(0) {
+            Some(c) => { c }
+            None => { panic!(format!("The string '{}' can not be converted into TupleCharStr", raw_data[1])) }
         };
 
         Ok(
@@ -124,10 +107,11 @@ impl FromStr for PositionsCharPassword {
             panic!(format!("The string '{}' can not be converted into TupleCharStr", s))
         }
 
-        let char = match CharInPassword::from_str(raw_data[1]) {
-            Ok(c) => { c }
-            Err(_) => { panic!(format!("The string '{}' can not be converted into TupleCharStr", s)) }
+        let char: CharInPassword = match raw_data[1].chars().nth(0) {
+            Some(c) => { c }
+            None => { panic!(format!("The string '{}' can not be converted into PositionsCharPassword", raw_data[1])) }
         };
+
         Ok(
             PositionsCharPassword(
                 Positions::from_str(raw_data[0])?,
@@ -137,47 +121,3 @@ impl FromStr for PositionsCharPassword {
         )
     }
 }
-
-// impl FromIterator<&str> for Vec<TupleCharStr> {
-//     fn from_iter<T: IntoIterator<Item=&'static str>>(iter: T) -> Self {
-//         let mut result: Vec<TupleCharStr> = vec![];
-//
-//         for element in iter {
-//             match TupleCharStr::from_str(&element) {
-//                 Ok(item) => { result.push(item) }
-//                 Err(_) => panic!("Invalid element: {}", element)
-//             }
-//         }
-//
-//         result
-//     }
-// }
-
-// impl TimesCharPasswordCollection {
-//     fn new() -> TimesCharPasswordCollection {
-//         TimesCharPasswordCollection(Vec::new())
-//     }
-//
-//     fn add(&mut self, elem: TimesCharPassword) {
-//         self.0.push(elem);
-//     }
-//
-//     pub fn iter(&mut self) -> Iter<'_, TimesCharPassword> {
-//         self.0.iter()
-//     }
-// }
-
-// impl<'a> FromIterator<&'a str> for TimesCharPasswordCollection {
-//     fn from_iter<T: IntoIterator<Item=&'a str>>(iter: T) -> Self {
-//         let mut result = TimesCharPasswordCollection::new();
-//
-//         for i in iter {
-//             match TimesCharPassword::from_str(i) {
-//                 Ok(item) => { result.add(item.clone()) }
-//                 Err(_) => {}
-//             }
-//         }
-//
-//         result
-//     }
-// }
