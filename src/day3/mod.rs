@@ -1,8 +1,9 @@
 use std::str::FromStr;
 use crate::day3::Square::{Open, Tree};
 use std::ops::Add;
+use crate::utils::get_input;
 
-pub fn count_trees_on_path(location_map: &LocationMap, steps: &Steps) -> usize {
+fn count_trees_on_path(location_map: &LocationMap, steps: &Steps) -> usize {
     let mut current_position = Position(0, 0);
 
     let mut total_trees = 0;
@@ -15,6 +16,14 @@ pub fn count_trees_on_path(location_map: &LocationMap, steps: &Steps) -> usize {
     }
 
     total_trees
+}
+
+pub fn solution() {
+    let location_map = get_input::<LocationMap>("input-day3.txt").unwrap();
+    let paths: Vec<Steps> = vec![Steps(1, 1), Steps(3, 1), Steps(5, 1), Steps(7, 1), Steps(1, 2)];
+
+    println!("Day 3 - part 1: {:?}", count_trees_on_path(&location_map, &Steps(3, 1)));
+    println!("Day 3 - part 2: {:?}", paths.iter().fold(1, |acc, steps| acc * count_trees_on_path(&location_map, steps)));
 }
 
 #[derive(Eq, PartialEq)]

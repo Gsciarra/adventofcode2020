@@ -1,4 +1,6 @@
-pub fn find_combination_to_obtain_n(numbers: &Vec<usize>, missing_n_in_combination: usize, n: usize) -> Option<Vec<usize>> {
+use crate::utils::get_input_by_lines;
+
+fn find_combination_to_obtain_n(numbers: &Vec<usize>, missing_n_in_combination: usize, n: usize) -> Option<Vec<usize>> {
     if numbers.len() < missing_n_in_combination {
         None
     } else if numbers.len() == missing_n_in_combination {
@@ -26,4 +28,13 @@ pub fn find_combination_to_obtain_n(numbers: &Vec<usize>, missing_n_in_combinati
             None
         }
     }
+}
+
+pub fn solution() {
+    let input = get_input_by_lines::<usize>("input-day1.txt").unwrap();
+    let combination_test1 = find_combination_to_obtain_n(&input, 2, 2020);
+    let combination_test2 = find_combination_to_obtain_n(&input, 3, 2020);
+
+    println!("Day 1 - part 1: {:?}", combination_test1.unwrap().iter().fold(1, |acc, x| acc * x));
+    println!("Day 1 - part 2: {:?}", combination_test2.unwrap().iter().fold(1, |acc, x| acc * x));
 }

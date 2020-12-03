@@ -1,12 +1,13 @@
 use std::str::FromStr;
+use crate::utils::get_input_by_lines;
 
-pub fn str_contain_char_a_range_of_times(times_char_password: &TimesCharPassword) -> bool {
+fn str_contain_char_a_range_of_times(times_char_password: &TimesCharPassword) -> bool {
     let TimesCharPassword(times, char, password) = times_char_password;
     let occurrences = password.chars().filter(|c| c == char).count();
     times.0 <= occurrences && occurrences <= times.1
 }
 
-pub fn str_contain_char_in_one_positions(positions_char_password: &PositionsCharPassword) -> bool {
+fn str_contain_char_in_one_positions(positions_char_password: &PositionsCharPassword) -> bool {
     let PositionsCharPassword(positions, char, password) = positions_char_password;
     let is_in_position1 = password.chars().nth(positions.0 - 1).unwrap() == *char;
     if password.len() >= positions.1 {
@@ -15,6 +16,14 @@ pub fn str_contain_char_in_one_positions(positions_char_password: &PositionsChar
     } else {
         is_in_position1
     }
+}
+
+pub fn solution() {
+    let input1 = get_input_by_lines::<TimesCharPassword>("input-day2.txt").unwrap();
+    let input2 = get_input_by_lines::<PositionsCharPassword>("input-day2.txt").unwrap();
+
+    println!("Day 2 - part 1: {:?}", input1.into_iter().filter(|tcp| str_contain_char_a_range_of_times(tcp)).count());
+    println!("Day 2 - part 2: {:?}", input2.into_iter().filter(|pcp| str_contain_char_in_one_positions(pcp)).count());
 }
 
 struct Times(usize, usize);
