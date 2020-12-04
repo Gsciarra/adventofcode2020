@@ -8,11 +8,3 @@ fn main() {
     day2::solution();
     day3::solution();
 }
-
-
-
-
-
-
-
-
