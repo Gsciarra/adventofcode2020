@@ -1,12 +1,10 @@
 use std::fs::File;
 use std::io::Read;
 use regex::Regex;
+use crate::utils::get_input;
 
 pub fn solution() {
-    let mut input = String::new();
-    let _read_result = File::open("input-day4.txt")
-        .unwrap()
-        .read_to_string(&mut input);
+    let mut input: String = get_input("input-day4.txt").unwrap();
 
     let required_fields = vec!["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
     let mut remain_to_check = required_fields.clone();
