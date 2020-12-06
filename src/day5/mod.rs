@@ -1,4 +1,4 @@
-use crate::utils::{get_input};
+use crate::utils::{get_input, print_solution};
 
 pub fn solution1() {
     let input = get_input::<String>("input-day5.txt").unwrap();
@@ -13,7 +13,7 @@ pub fn solution1() {
         }
     });
 
-    println!("{:?}", max);
+    print_solution(5, 1, max)
 }
 
 pub fn solution2() {
@@ -37,7 +37,7 @@ pub fn solution2() {
         }
     }
 
-    println!("{:?}", my_id);
+    print_solution(5, 2, my_id)
 }
 
 fn get_row(indications: &str) -> f64 {
@@ -90,14 +90,29 @@ fn get_column(indications: &str) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day5::{get_row, get_column};
+    use crate::day5::{get_column, get_row};
 
     #[test]
     fn it_works() {
-        assert_eq!(get_row(&"BFFFBBFRRR"[..7]) * 8f64 + get_column(&"BFFFBBFRRR"[7..10]), 567f64);
-        assert_eq!(get_row(&"FFFBBBFRRR"[..7]) * 8f64 + get_column(&"FFFBBBFRRR"[7..10]), 119f64);
-        assert_eq!(get_row(&"BBFFBBFRLL"[..7]) * 8f64 + get_column(&"BBFFBBFRLL"[7..10]), 820f64);
-        assert_eq!(get_row(&"FFFFFFFLLL"[..7]) * 8f64 + get_column(&"FFFFFFFLLL"[7..10]), 0f64);
-        assert_eq!(get_row(&"BBBBBBBRRR"[..7]) * 8f64 + get_column(&"BBBBBBBRRR"[7..10]), 127f64 * 8f64 + 7f64);
+        assert_eq!(
+            get_row(&"BFFFBBFRRR"[..7]) * 8f64 + get_column(&"BFFFBBFRRR"[7..10]),
+            567f64
+        );
+        assert_eq!(
+            get_row(&"FFFBBBFRRR"[..7]) * 8f64 + get_column(&"FFFBBBFRRR"[7..10]),
+            119f64
+        );
+        assert_eq!(
+            get_row(&"BBFFBBFRLL"[..7]) * 8f64 + get_column(&"BBFFBBFRLL"[7..10]),
+            820f64
+        );
+        assert_eq!(
+            get_row(&"FFFFFFFLLL"[..7]) * 8f64 + get_column(&"FFFFFFFLLL"[7..10]),
+            0f64
+        );
+        assert_eq!(
+            get_row(&"BBBBBBBRRR"[..7]) * 8f64 + get_column(&"BBBBBBBRRR"[7..10]),
+            127f64 * 8f64 + 7f64
+        );
     }
 }

@@ -3,7 +3,10 @@ pub mod area_map {
     use std::str::FromStr;
 
     #[derive(Copy, Clone, Debug)]
-    pub struct Position { x: usize, y: usize }
+    pub struct Position {
+        x: usize,
+        y: usize,
+    }
 
     impl Position {
         pub fn new(x: usize, y: usize) -> Position {
@@ -32,7 +35,10 @@ pub mod area_map {
 
     impl<T: FromChar + Clone + Eq> AreaMap<T> {
         pub fn new(s: &str) -> Self {
-            let map = s.lines().map(|line| line.chars().map(|c| T::from_char(c)).collect::<Vec<T>>()).collect::<Vec<Vec<T>>>();
+            let map = s
+                .lines()
+                .map(|line| line.chars().map(|c| T::from_char(c)).collect::<Vec<T>>())
+                .collect::<Vec<Vec<T>>>();
             AreaMap {
                 width: map[0].len(),
                 height: map.len(),
@@ -59,7 +65,8 @@ pub mod area_map {
 
         pub fn get_location(&self) -> T {
             if self.has_pac_man_approach {
-                return self.map[self.position.y % self.height][self.position.x % self.width].clone();
+                return self.map[self.position.y % self.height][self.position.x % self.width]
+                    .clone();
             }
             self.map[self.position.y][self.position.x].clone()
         }

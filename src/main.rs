@@ -1,15 +1,12 @@
-mod utils;
 mod day1;
 mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
+mod utils;
 
 fn main() {
-    // day1::solution();
-    // day2::solution();
-    // day3::solution();
-    // day4::solution();
-    // day4::solution2();
-    day5::solution2();
+    day6::solution1();
+    day6::solution2();
 }
