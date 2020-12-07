@@ -12,11 +12,10 @@ pub fn solution1() {
         bag_hierarchy.update_contained(&bags_contained_in, &rule.name);
     }
 
-    // println!("{:#?}", bag_hierarchy);
     print_solution(
         7,
         1,
-        bag_hierarchy.contained_by_count(&"shiny gold", &mut HashSet::new()),
+        bag_hierarchy.contained_by_count(&"shiny gold", &mut HashSet::new()) - 1,
     )
 }
 
@@ -25,8 +24,7 @@ pub fn solution2() {
     let mut bag_hierarchy = BagHierarchy::new();
 
     for rule in input.iter() {
-        let bags_contained_in = bag_hierarchy.add(rule);
-        bag_hierarchy.update_contained(&bags_contained_in, &rule.name);
+        bag_hierarchy.add(rule);
     }
 
     print_solution(7, 2, bag_hierarchy.tot_contains(&"shiny gold"))
@@ -131,23 +129,23 @@ impl BagHierarchy {
         }
     }
 
-    fn contained_by_count(&self, bag_name: &str, excluded: &mut HashSet<String>) -> usize {
+    fn contained_by_count(&self, bag_name: &str, traversed: &mut HashSet<String>) -> usize {
         let bag = self.map.get(bag_name);
-        excluded.insert(String::from(bag_name));
+        traversed.insert(String::from(bag_name));
         match bag {
             None => 0,
             Some(bag_tree) => {
-                let contained: HashSet<String> = bag_tree
+                let mut contained: HashSet<String> = bag_tree
                     .contained
                     .iter()
-                    .filter(|&name| !excluded.contains(name))
                     .map(|s| s.clone())
                     .collect();
                 contained.iter().fold(contained.len(), |tot, b| {
-                    tot + self.contained_by_count(b, excluded)
+                    tot + self.contained_by_count(b, traversed)
                 })
             }
-        }
+        };
+        traversed.len()
     }
 
     fn tot_contains(&self, bag_name: &str) -> usize {
