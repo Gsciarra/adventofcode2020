@@ -113,25 +113,21 @@ impl BagHierarchy {
     }
 
     fn add(&mut self, rule: &Rule) -> HashSet<String> {
-        if !self.map.contains_key(&rule.name) {
-            self.map.insert(rule.name.clone(), BagTree::new());
-        }
-        let bag = self.map.get_mut(&rule.name).unwrap();
+        let bag = self
+            .map
+            .entry(rule.name.clone())
+            .or_insert_with(|| BagTree::new());
 
         bag.add_contains(&rule.contains);
         bag.contains.clone()
     }
 
-    fn add_bag(&mut self, bag_name: &String) {
-        self.map.insert(String::from(bag_name), BagTree::new());
-    }
-
     fn update_contained(&mut self, bags: &HashSet<String>, contained_by: &str) {
         for b in bags {
-            if !self.map.contains_key(b) {
-                self.map.insert(b.clone(), BagTree::new());
-            }
-            self.map.get_mut(b).unwrap().add_contained(contained_by);
+            self.map
+                .entry(b.clone())
+                .or_insert_with(|| BagTree::new())
+                .add_contained(contained_by);
         }
     }
 
@@ -156,8 +152,9 @@ impl BagHierarchy {
 
     fn tot_contains(&self, bag_name: &str) -> usize {
         let bag = self.map.get(bag_name).unwrap();
-        bag.contains.iter().fold(bag.contains.len(), |tot, b_name| {
-            tot + bag.contains_count.get(b_name).unwrap() * self.tot_contains(b_name)
+
+        bag.contains.iter().fold(0, |tot, b_name| {
+            tot + bag.contains_count.get(b_name).unwrap() + bag.contains_count.get(b_name).unwrap() * self.tot_contains(b_name)
         })
     }
 }
