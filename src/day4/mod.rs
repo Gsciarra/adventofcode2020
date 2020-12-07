@@ -89,23 +89,23 @@ fn validation(k_v_field: &Vec<&str>) -> bool {
         "byr" => {
             value.len() == 4
                 && match value.parse::<usize>() {
-                Ok(v) => v >= 1920 && v <= 2002,
-                Err(_) => false,
-            }
+                    Ok(v) => v >= 1920 && v <= 2002,
+                    Err(_) => false,
+                }
         }
         "iyr" => {
             value.len() == 4
                 && match value.parse::<usize>() {
-                Ok(v) => v >= 2010 && v <= 2020,
-                Err(_) => false,
-            }
+                    Ok(v) => v >= 2010 && v <= 2020,
+                    Err(_) => false,
+                }
         }
         "eyr" => {
             value.len() == 4
                 && match value.parse::<usize>() {
-                Ok(v) => v >= 2020 && v <= 2030,
-                Err(_) => false,
-            }
+                    Ok(v) => v >= 2020 && v <= 2030,
+                    Err(_) => false,
+                }
         }
         "hgt" => {
             let len = value.len();
@@ -126,9 +126,9 @@ fn validation(k_v_field: &Vec<&str>) -> bool {
         "pid" => {
             value.len() == 9
                 && match value.parse::<usize>() {
-                Ok(_) => true,
-                Err(_) => false,
-            }
+                    Ok(_) => true,
+                    Err(_) => false,
+                }
         }
 
         _ => true,
